@@ -1,7 +1,7 @@
 -- Horse Hub GUI v4 (Full dengan Opening Animation)
 
 local Players = game:GetService("Players")
-local UserInputService = game:GetService("User InputService")
+local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
 
@@ -26,21 +26,6 @@ local playerGui = player:WaitForChild("PlayerGui")
 local old = playerGui:FindFirstChild("HorseHubGUI")
 if old then old:Destroy() end
 
--- Fungsi tween warna RGB secara loop
-local function tweenColors(frame, colorList, duration)
-    local index = 1
-    local tweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut)
-    local function nextTween()
-        local nextIndex = index % #colorList + 1
-        local tween = TweenService:Create(frame, tweenInfo, {BackgroundColor3 = colorList[nextIndex]})
-        tween:Play()
-        tween.Completed:Wait()
-        index = nextIndex
-        nextTween()
-    end
-    nextTween()
-end
-
 -- ========== OPENING ANIMATION ==========
 local openingGui = Instance.new("ScreenGui")
 openingGui.IgnoreGuiInset = true
@@ -48,21 +33,9 @@ openingGui.Parent = playerGui
 
 local bgFrame = Instance.new("Frame")
 bgFrame.Size = UDim2.new(1,0,1,0)
-bgFrame.BackgroundColor3 = Color3.fromRGB(0,0,0) -- warna awal
+bgFrame.BackgroundColor3 = Color3.fromRGB(0,0,0)
 bgFrame.BackgroundTransparency = 0
 bgFrame.Parent = openingGui
-
--- Warna gradasi untuk opening animation background
-local openingColors = {
-    Color3.fromRGB(0,0,0),
-    Color3.fromRGB(255,50,50),
-    Color3.fromRGB(50,50,255),
-    Color3.fromRGB(0,0,0)
-}
--- Mulai tween warna background opening animation secara loop
-spawn(function()
-    tweenColors(bgFrame, openingColors, 3)
-end)
 
 local openingText = Instance.new("TextLabel")
 openingText.Size = UDim2.new(1,0,1,0)
@@ -78,17 +51,17 @@ openingText.Parent = bgFrame
 -- Efek ketik huruf demi huruf
 local fullText = "HORSE HUB"
 spawn(function()
-    for i = 1, #fullText do
-        openingText.Text = string.sub(fullText, 1, i)
-        task.wait(0.15)
-    end
-    -- Fade out setelah selesai
-    local tweenInfo = TweenInfo.new(2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-    local t1 = TweenService:Create(openingText, tweenInfo, {TextTransparency = 1, TextStrokeTransparency = 1})
-    local t2 = TweenService:Create(bgFrame, tweenInfo, {BackgroundTransparency = 1})
-    t1:Play(); t2:Play()
-    t2.Completed:Wait()
-    openingGui:Destroy()
+for i = 1, #fullText do
+openingText.Text = string.sub(fullText, 1, i)
+task.wait(0.15)
+end
+-- Fade out setelah selesai
+local tweenInfo = TweenInfo.new(2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+local t1 = TweenService:Create(openingText, tweenInfo, {TextTransparency = 1, TextStrokeTransparency = 1})
+local t2 = TweenService:Create(bgFrame, tweenInfo, {BackgroundTransparency = 1})
+t1:Play(); t2:Play()
+t2.Completed:Wait()
+openingGui:Destroy()
 end)
 
 -- Delay sedikit sebelum GUI utama muncul
@@ -116,7 +89,7 @@ topTitle.Parent = screenGui
 local frame = Instance.new("Frame")
 frame.Size = UDim2.new(0, 340, 0, 380)
 frame.Position = UDim2.new(0.5, -170, 0.5, -190)
-frame.BackgroundColor3 = Color3.fromRGB(28,28,28) -- warna awal
+frame.BackgroundColor3 = Color3.fromRGB(28,28,28)
 frame.BorderSizePixel = 0
 frame.Parent = screenGui
 
@@ -138,7 +111,7 @@ header.Parent = frame
 -- Close (X) dan Minimize ([])
 local closeBtn = Instance.new("TextButton")
 closeBtn.Size = UDim2.new(0,34,0,30)
-closeBtn.Position = UDim2.new(1, -38, 0, 6)
+closeBtn.Position = UDim2.new(1,-38,0,6)
 closeBtn.Text = "X"
 closeBtn.Font = Enum.Font.SourceSansBold
 closeBtn.TextSize = 18
@@ -148,7 +121,7 @@ closeBtn.Parent = frame
 
 local minBtn = Instance.new("TextButton")
 minBtn.Size = UDim2.new(0,34,0,30)
-minBtn.Position = UDim2.new(1, -78, 0, 6)
+minBtn.Position = UDim2.new(1,-78,0,6)
 minBtn.Text = "▢"
 minBtn.Font = Enum.Font.SourceSansSemibold
 minBtn.TextSize = 18
@@ -159,7 +132,7 @@ minBtn.Parent = frame
 -- Mini Box (muncul ketika minimize)
 local miniBox = Instance.new("TextButton")
 miniBox.Size = UDim2.new(0,120,0,48)
-miniBox.Position = UDim2.new(0, 10, 0, 60)
+miniBox.Position = UDim2.new(0,10,0,60)
 miniBox.Text = "Horse Hub"
 miniBox.Font = Enum.Font.GothamBold
 miniBox.TextSize = 18
@@ -177,7 +150,7 @@ mbStroke.Parent = miniBox
 -- Confirm close
 local confirmFrame = Instance.new("Frame")
 confirmFrame.Size = UDim2.new(0,260,0,120)
-confirmFrame.Position = UDim2.new(0.5, -130, 0.5, -60)
+confirmFrame.Position = UDim2.new(0.5,-130,0.5,-60)
 confirmFrame.BackgroundColor3 = Color3.fromRGB(35,35,35)
 confirmFrame.BorderSizePixel = 0
 confirmFrame.Visible = false
@@ -200,7 +173,7 @@ confirmLabel.Parent = confirmFrame
 
 local noBtn = Instance.new("TextButton")
 noBtn.Size = UDim2.new(0,96,0,36)
-noBtn.Position = UDim2.new(0.11, 0, 0, 64)
+noBtn.Position = UDim2.new(0.11,0,0,64)
 noBtn.Text = "No!"
 noBtn.Font = Enum.Font.GothamSemibold
 noBtn.TextColor3 = Color3.fromRGB(255,255,255)
@@ -209,7 +182,7 @@ noBtn.Parent = confirmFrame
 
 local yesBtn = Instance.new("TextButton")
 yesBtn.Size = UDim2.new(0,96,0,36)
-yesBtn.Position = UDim2.new(0.55, 0, 0, 64)
+yesBtn.Position = UDim2.new(0.55,0,0,64)
 yesBtn.Text = "Yes"
 yesBtn.Font = Enum.Font.GothamSemibold
 yesBtn.TextColor3 = Color3.fromRGB(255,255,255)
@@ -218,45 +191,46 @@ yesBtn.Parent = confirmFrame
 
 -- Function buat baris angka dengan < angka >
 local function createNumberRow(parent, y, labelText, initialValue)
-    local lbl = Instance.new("TextLabel")
-    lbl.Size = UDim2.new(0,120,0,28)
-    lbl.Position = UDim2.new(0,16,0,y)
-    lbl.BackgroundTransparency = 1
-    lbl.Text = labelText
-    lbl.Font = Enum.Font.Gotham
-    lbl.TextSize = 14
-    lbl.TextColor3 = Color3.fromRGB(220,220,220)
-    lbl.TextXAlignment = Enum.TextXAlignment.Left
-    lbl.Parent = parent
+local lbl = Instance.new("TextLabel")
+lbl.Size = UDim2.new(0,120,0,28)
+lbl.Position = UDim2.new(0,16,0,y)
+lbl.BackgroundTransparency = 1
+lbl.Text = labelText
+lbl.Font = Enum.Font.Gotham
+lbl.TextSize = 14
+lbl.TextColor3 = Color3.fromRGB(220,220,220)
+lbl.TextXAlignment = Enum.TextXAlignment.Left
+lbl.Parent = parent
 
-    local dec = Instance.new("TextButton")  
-    dec.Size = UDim2.new(0,28,0,28)  
-    dec.Position = UDim2.new(0,150,0,y)  
-    dec.Text = "<"  
-    dec.Font = Enum.Font.GothamBold  
-    dec.TextSize = 18  
-    dec.Parent = parent  
+local dec = Instance.new("TextButton")  
+dec.Size = UDim2.new(0,28,0,28)  
+dec.Position = UDim2.new(0,150,0,y)  
+dec.Text = "<"  
+dec.Font = Enum.Font.GothamBold  
+dec.TextSize = 18  
+dec.Parent = parent  
 
-    local valLabel = Instance.new("TextLabel")  
-    valLabel.Size = UDim2.new(0,80,0,28)  
-    valLabel.Position = UDim2.new(0,186,0,y)  
-    valLabel.BackgroundColor3 = Color3.fromRGB(45,45,45)  
-    valLabel.BorderSizePixel = 0  
-    valLabel.Text = tostring(initialValue)  
-    valLabel.Font = Enum.Font.GothamBold  
-    valLabel.TextSize = 16  
-    valLabel.TextColor3 = Color3.fromRGB(255,255,255)  
-    valLabel.Parent = parent  
+local valLabel = Instance.new("TextLabel")  
+valLabel.Size = UDim2.new(0,80,0,28)  
+valLabel.Position = UDim2.new(0,186,0,y)  
+valLabel.BackgroundColor3 = Color3.fromRGB(45,45,45)  
+valLabel.BorderSizePixel = 0  
+valLabel.Text = tostring(initialValue)  
+valLabel.Font = Enum.Font.GothamBold  
+valLabel.TextSize = 16  
+valLabel.TextColor3 = Color3.fromRGB(255,255,255)  
+valLabel.Parent = parent  
 
-    local inc = Instance.new("TextButton")  
-    inc.Size = UDim2.new(0,28,0,28)  
-    inc.Position = UDim2.new(0,268,0,y)  
-    inc.Text = ">"  
-    inc.Font = Enum.Font.GothamBold  
-    inc.TextSize = 18  
-    inc.Parent = parent  
+local inc = Instance.new("TextButton")  
+inc.Size = UDim2.new(0,28,0,28)  
+inc.Position = UDim2.new(0,268,0,y)  
+inc.Text = ">"  
+inc.Font = Enum.Font.GothamBold  
+inc.TextSize = 18  
+inc.Parent = parent  
 
-    return {dec=dec,val=valLabel,inc=inc}
+return {dec=dec,val=valLabel,inc=inc}
+
 end
 
 -- Buat kontrol
@@ -269,7 +243,7 @@ local jumpRow = createNumberRow(frame, 220, "Jump Power", JumpPowerValue)
 -- Tombol toggle fly
 local flyToggle = Instance.new("TextButton")
 flyToggle.Size = UDim2.new(0,300,0,36)
-flyToggle.Position = UDim2.new(0.5, -150, 0, 268)
+flyToggle.Position = UDim2.new(0.5,-150,0,268)
 flyToggle.Text = "Toggle Fly (F)"
 flyToggle.Font = Enum.Font.GothamBold
 flyToggle.TextSize = 18
@@ -279,128 +253,112 @@ flyToggle.Parent = frame
 
 -- Update label angka
 local function updateAllLabels()
-    flyRow.val.Text = tostring(FlySpeed)
-    heightRow.val.Text = tostring(FlyHeight)
-    extraRow.val.Text = tostring(ExtraSpeed)
-    walkRow.val.Text = tostring(WalkSpeedValue)
-    jumpRow.val.Text = tostring(JumpPowerValue)
+flyRow.val.Text = tostring(FlySpeed)
+heightRow.val.Text = tostring(FlyHeight)
+extraRow.val.Text = tostring(ExtraSpeed)
+walkRow.val.Text = tostring(WalkSpeedValue)
+jumpRow.val.Text = tostring(JumpPowerValue)
 end
 updateAllLabels()
 
 -- Binding tombol < >
 local function bindIncDec(row, getVal, setVal)
-    row.dec.MouseButton1Click:Connect(function()
-        local v = getVal() - 1
-        setVal(v)
-        updateAllLabels()
-    end)
-    row.inc.MouseButton1Click:Connect(function()
-        local v = getVal() + 1
-        setVal(v)
-        updateAllLabels()
-    end)
+row.dec.MouseButton1Click:Connect(function()
+local v = getVal()-1
+setVal(v)
+updateAllLabels()
+end)
+row.inc.MouseButton1Click:Connect(function()
+local v = getVal()+1
+setVal(v)
+updateAllLabels()
+end)
 end
 
 bindIncDec(flyRow, function() return FlySpeed end, function(v) FlySpeed = math.max(0,v) end)
 bindIncDec(heightRow, function() return FlyHeight end, function(v) FlyHeight = v end)
 bindIncDec(extraRow, function() return ExtraSpeed end, function(v) ExtraSpeed = v end)
-bindIncDec(walkRow, function() return WalkSpeedValue end, function(v) WalkSpeedValue = math.max(1,v); humanoid.WalkSpeed = WalkSpeedValue end)
-bindIncDec(jumpRow, function() return JumpPowerValue end, function(v) JumpPowerValue = math.max(1,v); humanoid.JumpPower = JumpPowerValue end)
+bindIncDec(walkRow, function() return WalkSpeedValue end, function(v) WalkSpeedValue = math.max(1,v); humanoid.WalkSpeed=WalkSpeedValue end)
+bindIncDec(jumpRow, function() return JumpPowerValue end, function(v) JumpPowerValue = math.max(1,v); humanoid.JumpPower=JumpPowerValue end)
 
 -- Fly logic
 local currentBV
 local function startFly()
-    if currentBV then currentBV:Destroy() end
-    currentBV = Instance.new("BodyVelocity")
-    currentBV.MaxForce = Vector3.new(1e5,1e5,1e5)
-    currentBV.P = 1250
-    currentBV.Parent = root
+if currentBV then currentBV:Destroy() end
+currentBV = Instance.new("BodyVelocity")
+currentBV.MaxForce = Vector3.new(1e5,1e5,1e5)
+currentBV.P = 1250
+currentBV.Parent = root
 
-    while FlyEnabled and currentBV.Parent do  
-        local moveDir = Vector3.new()  
-        if UserInputService:IsKeyDown(Enum.KeyCode.W) then moveDir += root.CFrame.LookVector end  
-        if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir -= root.CFrame.LookVector end  
-        if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir -= root.CFrame.RightVector end  
-        if UserInputService:IsKeyDown(Enum.KeyCode.D) then moveDir += root.CFrame.RightVector end  
+while FlyEnabled and currentBV.Parent do  
+    local moveDir = Vector3.new()  
+    if UserInputService:IsKeyDown(Enum.KeyCode.W) then moveDir += root.CFrame.LookVector end  
+    if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir -= root.CFrame.LookVector end  
+    if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir -= root.CFrame.RightVector end  
+    if UserInputService:IsKeyDown(Enum.KeyCode.D) then moveDir += root.CFrame.RightVector end  
 
-        local vy = 0  
-        if UserInputService:IsKeyDown(Enum.KeyCode.Space) then vy += VerticalSpeed end  
-        if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then vy -= VerticalSpeed end  
+    local vy = 0  
+    if UserInputService:IsKeyDown(Enum.KeyCode.Space) then vy += VerticalSpeed end  
+    if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then vy -= VerticalSpeed end  
 
-        local hv = (moveDir.Magnitude > 0 and moveDir.Unit * FlySpeed) or Vector3.new()  
-        currentBV.Velocity = hv + Vector3.new(0, FlyHeight + vy + ExtraSpeed, 0)  
+    local hv = (moveDir.Magnitude>0 and moveDir.Unit*FlySpeed) or Vector3.new()  
+    currentBV.Velocity = hv + Vector3.new(0, FlyHeight+vy+ExtraSpeed, 0)  
 
-        RunService.RenderStepped:Wait()  
-    end  
-    if currentBV then currentBV:Destroy() end
+    RunService.RenderStepped:Wait()  
+end  
+if currentBV then currentBV:Destroy() end
+
 end
 
 local function toggleFly()
-    FlyEnabled = not FlyEnabled
-    if FlyEnabled then spawn(startFly) end
+FlyEnabled = not FlyEnabled
+if FlyEnabled then spawn(startFly) end
 end
 
 flyToggle.MouseButton1Click:Connect(toggleFly)
-User InputService.InputBegan:Connect(function(i,gpe)
-    if i.UserInputType == Enum.UserInputType.Keyboard and i.KeyCode == Enum.KeyCode.F and not gpe then
-        toggleFly()
-    end
+UserInputService.InputBegan:Connect(function(i,gpe)
+if i.UserInputType==Enum.UserInputType.Keyboard and i.KeyCode==Enum.KeyCode.F and not gpe then
+toggleFly()
+end
 end)
 
 -- Minimize/restore
 minBtn.MouseButton1Click:Connect(function()
-    frame.Visible = false
-    topTitle.Visible = false
-    miniBox.Visible = true
+frame.Visible=false; topTitle.Visible=false; miniBox.Visible=true
 end)
 miniBox.MouseButton1Click:Connect(function()
-    frame.Visible = true
-    topTitle.Visible = true
-    miniBox.Visible = false
+frame.Visible=true; topTitle.Visible=true; miniBox.Visible=false
 end)
 
 -- Close confirm
-closeBtn.MouseButton1Click:Connect(function() confirmFrame.Visible = true end)
-noBtn.MouseButton1Click:Connect(function() confirmFrame.Visible = false end)
+closeBtn.MouseButton1Click:Connect(function() confirmFrame.Visible=true end)
+noBtn.MouseButton1Click:Connect(function() confirmFrame.Visible=false end)
 yesBtn.MouseButton1Click:Connect(function()
-    if currentBV then currentBV:Destroy() end
-    screenGui:Destroy()
+if currentBV then currentBV:Destroy() end
+screenGui:Destroy()
 end)
 
 -- Defaults
-humanoid.WalkSpeed = WalkSpeedValue
-humanoid.JumpPower = JumpPowerValue
+humanoid.WalkSpeed=WalkSpeedValue
+humanoid.JumpPower=JumpPowerValue
 
 -- Respawn handling
 player.CharacterAdded:Connect(function(char)
-    character = char
-    humanoid = char:WaitForChild("Humanoid")
-    root = char:WaitForChild("HumanoidRootPart")
-    humanoid.WalkSpeed = WalkSpeedValue
-    humanoid.JumpPower = JumpPowerValue
+character=char
+humanoid=char:WaitForChild("Humanoid")
+root=char:WaitForChild("HumanoidRootPart")
+humanoid.WalkSpeed=WalkSpeedValue
+humanoid.JumpPower=JumpPowerValue
 end)
 
 -- Instruction bottom
-local inst = Instance.new("TextLabel")
-inst.Size = UDim2.new(0,300,0,20)
-inst.Position = UDim2.new(0.5, -150, 1, -28)
-inst.BackgroundTransparency = 1
-inst.Text = "F=Fly | Space=Up | Shift=Down | < > adjust values"
-inst.Font = Enum.Font.SourceSans
-inst.TextSize = 14
-inst.TextColor3 = Color3.fromRGB(200,200,200)
-inst.Parent = screenGui
+local inst=Instance.new("TextLabel")
+inst.Size=UDim2.new(0,300,0,20)
+inst.Position=UDim2.new(0.5,-150,1,-28)
+inst.BackgroundTransparency=1
+inst.Text="F=Fly | Space=Up | Shift=Down | < > adjust values"
+inst.Font=Enum.Font.SourceSans
+inst.TextSize=14
+inst.TextColor3=Color3.fromRGB(200,200,200)
+inst.Parent=screenGui
 
--- Warna gradasi untuk frame utama
-local mainColors = {
-    Color3.fromRGB(28,28,28),
-    Color3.fromRGB(255,50,50),
-    Color3.fromRGB(128,0,128),
-    Color3.fromRGB(50,50,255),
-    Color3.fromRGB(28,28,28)
-}
-
--- Mulai tween warna background frame utama secara loop
-spawn(function()
-    tweenColors(frame, mainColors, 5)
-end)
