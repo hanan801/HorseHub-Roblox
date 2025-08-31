@@ -38,15 +38,28 @@ bgFrame.BackgroundColor3 = Color3.fromRGB(0,0,0)
 bgFrame.BackgroundTransparency = 0
 bgFrame.Parent = openingGui
 
+-- Background RGB effect
+spawn(function()
+    local time = 0
+    while openingGui.Parent do
+        time = time + 0.01
+        local r = math.sin(time) * 0.5 + 0.5
+        local g = math.sin(time + 2) * 0.5 + 0.5
+        local b = math.sin(time + 4) * 0.5 + 0.5
+        bgFrame.BackgroundColor3 = Color3.new(r, g, b)
+        task.wait(0.05)
+    end
+end)
+
 local openingText = Instance.new("TextLabel")
 openingText.Size = UDim2.new(1,0,1,0)
 openingText.Text = ""
 openingText.BackgroundTransparency = 1
-openingText.TextColor3 = Color3.fromRGB(255,50,50)
+openingText.TextColor3 = Color3.fromRGB(255,255,255)
 openingText.Font = Enum.Font.GothamBlack
 openingText.TextScaled = true
 openingText.TextStrokeTransparency = 0
-openingText.TextStrokeColor3 = Color3.fromRGB(80,80,80)
+openingText.TextStrokeColor3 = Color3.fromRGB(0,0,0)
 openingText.Parent = bgFrame
 
 -- Efek ketik huruf demi huruf (dengan kecepatan normal)
@@ -65,19 +78,6 @@ spawn(function()
     openingGui:Destroy()
 end)
 
--- Background RGB effect
-spawn(function()
-    local time = 0
-    while openingGui.Parent do
-        time = time + 0.01
-        local r = math.sin(time) * 0.5 + 0.5
-        local g = math.sin(time + 2) * 0.5 + 0.5
-        local b = math.sin(time + 4) * 0.5 + 0.5
-        openingText.TextColor3 = Color3.new(r, g, b)
-        task.wait(0.05)
-    end
-end)
-
 -- Delay sedikit sebelum GUI utama muncul
 task.wait(#fullText * 0.15 + 2.5) -- Sesuai dengan kecepatan ketik normal
 
@@ -86,28 +86,6 @@ local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "HorseHubGUI"
 screenGui.ResetOnSpawn = false
 screenGui.Parent = playerGui
-
--- Tombol Join Discord di pojok kiri atas
-local discordBtn = Instance.new("TextButton")
-discordBtn.Size = UDim2.new(0, 100, 0, 24)
-discordBtn.Position = UDim2.new(0, 10, 0, 10)
-discordBtn.BackgroundColor3 = Color3.fromRGB(45,45,45)
-discordBtn.BorderSizePixel = 0
-discordBtn.Text = "Join Discord"
-discordBtn.Font = Enum.Font.Gotham
-discordBtn.TextSize = 14
-discordBtn.TextColor3 = Color3.fromRGB(200,200,200)
-discordBtn.Parent = screenGui
-
-discordBtn.MouseButton1Click:Connect(function()
-    setclipboard("https://discord.gg/mVA26ZKr")
-    
-    -- Feedback bahwa link telah disalin
-    local originalText = discordBtn.Text
-    discordBtn.Text = "Copied!"
-    task.wait(1)
-    discordBtn.Text = originalText
-end)
 
 -- Top Title
 local topTitle = Instance.new("TextLabel")
@@ -143,6 +121,28 @@ header.Font = Enum.Font.GothamSemibold
 header.TextSize = 20
 header.TextColor3 = Color3.fromRGB(255,50,50)
 header.Parent = frame
+
+-- Tombol Join Discord di pojok kiri atas (di dalam frame utama)
+local discordBtn = Instance.new("TextButton")
+discordBtn.Size = UDim2.new(0, 100, 0, 24)
+discordBtn.Position = UDim2.new(0, 10, 0, 10)
+discordBtn.BackgroundColor3 = Color3.fromRGB(45,45,45)
+discordBtn.BorderSizePixel = 0
+discordBtn.Text = "Join Discord"
+discordBtn.Font = Enum.Font.Gotham
+discordBtn.TextSize = 14
+discordBtn.TextColor3 = Color3.fromRGB(200,200,200)
+discordBtn.Parent = frame
+
+discordBtn.MouseButton1Click:Connect(function()
+    setclipboard("https://discord.gg/mVA26ZKr")
+    
+    -- Feedback bahwa link telah disalin
+    local originalText = discordBtn.Text
+    discordBtn.Text = "Copied!"
+    task.wait(1)
+    discordBtn.Text = originalText
+end)
 
 -- Close (X) dan Minimize ([])
 local closeBtn = Instance.new("TextButton")
@@ -270,11 +270,11 @@ return {dec=dec,val=valLabel,inc=inc}
 end
 
 -- Buat kontrol
-local flyRow = createNumberRow(frame, 60, "Fly Speed", FlySpeed)
+local flyRow = createNumberRow(frame, 60, "Terbang Kecepatan", FlySpeed)
 local heightRow = createNumberRow(frame, 100, "Fly Height", FlyHeight)
-local extraRow = createNumberRow(frame, 140, "Extra Speed", ExtraSpeed)
-local walkRow = createNumberRow(frame, 180, "Walk Speed", WalkSpeedValue)
-local jumpRow = createNumberRow(frame, 220, "Jump Power", JumpPowerValue)
+local extraRow = createNumberRow(frame, 140, "Extra Kecepatan", ExtraSpeed)
+local walkRow = createNumberRow(frame, 180, "Kecepatan Berjalan", WalkSpeedValue)
+local jumpRow = createNumberRow(frame, 220, "Daya Lompat", JumpPowerValue)
 
 -- Tombol toggle fly
 local flyToggle = Instance.new("TextButton")
@@ -392,8 +392,8 @@ local inst=Instance.new("TextLabel")
 inst.Size=UDim2.new(0,300,0,20)
 inst.Position=UDim2.new(0.5,-150,1,-28)
 inst.BackgroundTransparency=1
-inst.Text="F=Fly | Space=Up | Shift=Down | < > adjust values"
+inst.Text="F=Fly | Space=Up | Shift=Down | \(<\) > adjust values"
 inst.Font=Enum.Font.SourceSans
 inst.TextSize=14
 inst.TextColor3=Color3.fromRGB(200,200,200)
-inst.Parent=screenGui
+inst.Parent=frame
