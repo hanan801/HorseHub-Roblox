@@ -28,6 +28,7 @@ if old then old:Destroy() end
 
 -- ========== OPENING ANIMATION ==========
 local openingGui = Instance.new("ScreenGui")
+openingGui.Name = "OpeningAnimation"
 openingGui.IgnoreGuiInset = true
 openingGui.Parent = playerGui
 
@@ -36,6 +37,32 @@ bgFrame.Size = UDim2.new(1,0,1,0)
 bgFrame.BackgroundColor3 = Color3.fromRGB(0,0,0)
 bgFrame.BackgroundTransparency = 0
 bgFrame.Parent = openingGui
+
+-- Membuat gradient RGB untuk background
+local uigradient = Instance.new("UIGradient")
+uigradient.Rotation = 45
+uigradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(0, 255, 0)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 255))
+}
+uigradient.Parent = bgFrame
+
+-- Teks "join discord" di pojok kiri atas
+local discordText = Instance.new("TextButton")
+discordText.Size = UDim2.new(0, 80, 0, 20)
+discordText.Position = UDim2.new(0, 10, 0, 10)
+discordText.BackgroundTransparency = 1
+discordText.Text = "join discord"
+discordText.Font = Enum.Font.Gotham
+discordText.TextSize = 14
+discordText.TextColor3 = Color3.fromRGB(200, 200, 200)
+discordText.TextXAlignment = Enum.TextXAlignment.Left
+discordText.Parent = openingGui
+
+discordText.MouseButton1Click:Connect(function()
+    setclipboard("https://discord.gg/mVA26ZKr")
+end)
 
 local openingText = Instance.new("TextLabel")
 openingText.Size = UDim2.new(1,0,1,0)
@@ -48,24 +75,24 @@ openingText.TextStrokeTransparency = 0
 openingText.TextStrokeColor3 = Color3.fromRGB(80,80,80)
 openingText.Parent = bgFrame
 
--- Efek ketik huruf demi huruf
+-- Efek ketik huruf demi huruf (lebih cepat)
 local fullText = "HORSE HUB"
 spawn(function()
-for i = 1, #fullText do
-openingText.Text = string.sub(fullText, 1, i)
-task.wait(0.15)
-end
--- Fade out setelah selesai
-local tweenInfo = TweenInfo.new(2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-local t1 = TweenService:Create(openingText, tweenInfo, {TextTransparency = 1, TextStrokeTransparency = 1})
-local t2 = TweenService:Create(bgFrame, tweenInfo, {BackgroundTransparency = 1})
-t1:Play(); t2:Play()
-t2.Completed:Wait()
-openingGui:Destroy()
+    for i = 1, #fullText do
+        openingText.Text = string.sub(fullText, 1, i)
+        task.wait(0.05) -- Dipercepat dari 0.15 menjadi 0.05
+    end
+    -- Fade out setelah selesai
+    local tweenInfo = TweenInfo.new(2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+    local t1 = TweenService:Create(openingText, tweenInfo, {TextTransparency = 1, TextStrokeTransparency = 1})
+    local t2 = TweenService:Create(bgFrame, tweenInfo, {BackgroundTransparency = 1})
+    t1:Play(); t2:Play()
+    t2.Completed:Wait()
+    openingGui:Destroy()
 end)
 
 -- Delay sedikit sebelum GUI utama muncul
-task.wait(#fullText * 0.15 + 2.5)
+task.wait(#fullText * 0.05 + 2.5) -- Diperbarui sesuai dengan kecepatan ketik baru
 
 -- ========== HORSE HUB GUI ==========
 local screenGui = Instance.new("ScreenGui")
@@ -361,4 +388,3 @@ inst.Font=Enum.Font.SourceSans
 inst.TextSize=14
 inst.TextColor3=Color3.fromRGB(200,200,200)
 inst.Parent=screenGui
-
