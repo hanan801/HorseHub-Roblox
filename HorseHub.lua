@@ -65,6 +65,19 @@ spawn(function()
     openingGui:Destroy()
 end)
 
+-- Background RGB effect
+spawn(function()
+    local time = 0
+    while openingGui.Parent do
+        time = time + 0.01
+        local r = math.sin(time) * 0.5 + 0.5
+        local g = math.sin(time + 2) * 0.5 + 0.5
+        local b = math.sin(time + 4) * 0.5 + 0.5
+        openingText.TextColor3 = Color3.new(r, g, b)
+        task.wait(0.05)
+    end
+end)
+
 -- Delay sedikit sebelum GUI utama muncul
 task.wait(#fullText * 0.15 + 2.5) -- Sesuai dengan kecepatan ketik normal
 
@@ -73,6 +86,28 @@ local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "HorseHubGUI"
 screenGui.ResetOnSpawn = false
 screenGui.Parent = playerGui
+
+-- Tombol Join Discord di pojok kiri atas
+local discordBtn = Instance.new("TextButton")
+discordBtn.Size = UDim2.new(0, 100, 0, 24)
+discordBtn.Position = UDim2.new(0, 10, 0, 10)
+discordBtn.BackgroundColor3 = Color3.fromRGB(45,45,45)
+discordBtn.BorderSizePixel = 0
+discordBtn.Text = "Join Discord"
+discordBtn.Font = Enum.Font.Gotham
+discordBtn.TextSize = 14
+discordBtn.TextColor3 = Color3.fromRGB(200,200,200)
+discordBtn.Parent = screenGui
+
+discordBtn.MouseButton1Click:Connect(function()
+    setclipboard("https://discord.gg/mVA26ZKr")
+    
+    -- Feedback bahwa link telah disalin
+    local originalText = discordBtn.Text
+    discordBtn.Text = "Copied!"
+    task.wait(1)
+    discordBtn.Text = originalText
+end)
 
 -- Top Title
 local topTitle = Instance.new("TextLabel")
