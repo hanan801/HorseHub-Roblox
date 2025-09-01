@@ -74,6 +74,13 @@ spawn(function()
     t1:Play(); t2:Play()
     t2.Completed:Wait()
     openingGui:Destroy()
+    
+    -- Notifikasi setelah animasi pembukaan
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "Horse Hub v1",
+        Text = "Thanks for using my script btw script by h4000audio enjoy!",
+        Duration = 5
+    })
 end)
 
 -- Delay sedikit sebelum GUI utama muncul
@@ -84,39 +91,6 @@ local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "HorseHubGUI"
 screenGui.ResetOnSpawn = false
 screenGui.Parent = playerGui
-
--- Notifikasi di pojok kanan bawah
-local notification = Instance.new("Frame")
-notification.Size = UDim2.new(0, 200, 0, 60)
-notification.Position = UDim2.new(1, -210, 1, -70)
-notification.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-notification.BorderSizePixel = 0
-notification.Parent = screenGui
-
-local notifStroke = Instance.new("UIStroke")
-notifStroke.Thickness = 2
-notifStroke.Color = Color3.fromRGB(100,100,100)
-notifStroke.Parent = notification
-
-local versionText = Instance.new("TextLabel")
-versionText.Size = UDim2.new(1, 0, 0, 30)
-versionText.Position = UDim2.new(0, 0, 0, 0)
-versionText.BackgroundTransparency = 1
-versionText.Text = "Horse Hub v1"
-versionText.Font = Enum.Font.GothamBold
-versionText.TextSize = 18
-versionText.TextColor3 = Color3.fromRGB(255,50,50)
-versionText.Parent = notification
-
-local descText = Instance.new("TextLabel")
-descText.Size = UDim2.new(1, 0, 0, 30)
-descText.Position = UDim2.new(0, 0, 0, 30)
-descText.BackgroundTransparency = 1
-descText.Text = "thanks for using my script btw script by h4000audio enjoy!"
-descText.Font = Enum.Font.Gotham
-descText.TextSize = 12
-descText.TextColor3 = Color3.fromRGB(200,200,200)
-descText.Parent = notification
 
 -- Top Title
 local topTitle = Instance.new("TextLabel")
@@ -169,10 +143,11 @@ discordBtn.MouseButton1Click:Connect(function()
     setclipboard("https://discord.gg/mVA26ZKr")
     
     -- Feedback bahwa link telah disalin
-    local originalText = discordBtn.Text
-    discordBtn.Text = "Copied!"
-    task.wait(1)
-    discordBtn.Text = originalText
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "Discord",
+        Text = "Link discord telah disalin!",
+        Duration = 3
+    })
 end)
 
 -- Close (X) dan Minimize ([])
@@ -275,12 +250,15 @@ dec.Position = UDim2.new(0,150,0,y)
 dec.Text = "<"  
 dec.Font = Enum.Font.GothamBold  
 dec.TextSize = 18  
+dec.TextColor3 = Color3.fromRGB(255,255,255) -- Warna putih untuk panah
+dec.BackgroundColor3 = Color3.fromRGB(100,100,100) -- Abu-abu terang
+dec.BorderSizePixel = 0
 dec.Parent = parent  
 
 local valLabel = Instance.new("TextLabel")  
 valLabel.Size = UDim2.new(0,80,0,28)  
 valLabel.Position = UDim2.new(0,186,0,y)  
-valLabel.BackgroundColor3 = Color3.fromRGB(45,45,45)  
+valLabel.BackgroundColor3 = Color3.fromRGB(45,45,45) -- Abu-abu gelap
 valLabel.BorderSizePixel = 0  
 valLabel.Text = tostring(initialValue)  
 valLabel.Font = Enum.Font.GothamBold  
@@ -294,6 +272,9 @@ inc.Position = UDim2.new(0,268,0,y)
 inc.Text = ">"  
 inc.Font = Enum.Font.GothamBold  
 inc.TextSize = 18  
+inc.TextColor3 = Color3.fromRGB(255,255,255) -- Warna putih untuk panah
+inc.BackgroundColor3 = Color3.fromRGB(100,100,100) -- Abu-abu terang
+inc.BorderSizePixel = 0
 inc.Parent = parent  
 
 return {dec=dec,val=valLabel,inc=inc}
@@ -306,90 +287,99 @@ local extraRow = createNumberRow(frame, 100, "Extra Kecepatan", ExtraSpeed)
 local walkRow = createNumberRow(frame, 140, "Kecepatan Berjalan", WalkSpeedValue)
 local jumpRow = createNumberRow(frame, 180, "Daya Lompat", JumpPowerValue)
 
--- Tombol Fly baru (menggantikan Toggle Fly)
-local flyFrame = Instance.new("Frame")
-flyFrame.Size = UDim2.new(0, 300, 0, 80)
-flyFrame.Position = UDim2.new(0.5, -150, 0, 220)
-flyFrame.BackgroundColor3 = Color3.fromRGB(45,45,45)
-flyFrame.BorderSizePixel = 0
-flyFrame.Parent = frame
-
-local flyStroke = Instance.new("UIStroke")
-flyStroke.Thickness = 1
-flyStroke.Color = Color3.fromRGB(100,100,100)
-flyStroke.Parent = flyFrame
+-- Frame untuk kontrol fly
+local flyControlFrame = Instance.new("Frame")
+flyControlFrame.Size = UDim2.new(0, 300, 0, 100)
+flyControlFrame.Position = UDim2.new(0.5, -150, 0, 220)
+flyControlFrame.BackgroundTransparency = 1
+flyControlFrame.Parent = frame
 
 -- Tombol Up
 local upBtn = Instance.new("TextButton")
-upBtn.Size = UDim2.new(0, 60, 0, 30)
-upBtn.Position = UDim2.new(0, 10, 0, 10)
-upBtn.BackgroundColor3 = Color3.fromRGB(79, 255, 152)
+upBtn.Size = UDim2.new(0, 80, 0, 30)
+upBtn.Position = UDim2.new(0, 10, 0, 0)
+upBtn.BackgroundColor3 = Color3.fromRGB(45,45,45)
 upBtn.BorderSizePixel = 0
-upBtn.Text = "UP"
+upBtn.Text = "NAIK"
 upBtn.Font = Enum.Font.GothamBold
 upBtn.TextSize = 14
-upBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
-upBtn.Parent = flyFrame
+upBtn.TextColor3 = Color3.fromRGB(255,255,255)
+upBtn.Parent = flyControlFrame
 
 -- Tombol Down
 local downBtn = Instance.new("TextButton")
-downBtn.Size = UDim2.new(0, 60, 0, 30)
-downBtn.Position = UDim2.new(0, 80, 0, 10)
-downBtn.BackgroundColor3 = Color3.fromRGB(215, 255, 121)
+downBtn.Size = UDim2.new(0, 80, 0, 30)
+downBtn.Position = UDim2.new(0, 100, 0, 0)
+downBtn.BackgroundColor3 = Color3.fromRGB(45,45,45)
 downBtn.BorderSizePixel = 0
-downBtn.Text = "DOWN"
+downBtn.Text = "TURUN"
 downBtn.Font = Enum.Font.GothamBold
 downBtn.TextSize = 14
-downBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
-downBtn.Parent = flyFrame
+downBtn.TextColor3 = Color3.fromRGB(255,255,255)
+downBtn.Parent = flyControlFrame
 
 -- Tombol Fly On/Off
 local flyOnOffBtn = Instance.new("TextButton")
 flyOnOffBtn.Size = UDim2.new(0, 80, 0, 30)
-flyOnOffBtn.Position = UDim2.new(0, 150, 0, 10)
-flyOnOffBtn.BackgroundColor3 = Color3.fromRGB(255, 249, 74)
+flyOnOffBtn.Position = UDim2.new(0, 190, 0, 0)
+flyOnOffBtn.BackgroundColor3 = Color3.fromRGB(45,45,45)
 flyOnOffBtn.BorderSizePixel = 0
 flyOnOffBtn.Text = "FLY"
 flyOnOffBtn.Font = Enum.Font.GothamBold
 flyOnOffBtn.TextSize = 14
-flyOnOffBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
-flyOnOffBtn.Parent = flyFrame
+flyOnOffBtn.TextColor3 = Color3.fromRGB(255,255,255)
+flyOnOffBtn.Parent = flyControlFrame
 
--- Label Speed
+-- Kontrol kecepatan fly
+local speedControlFrame = Instance.new("Frame")
+speedControlFrame.Size = UDim2.new(0, 300, 0, 40)
+speedControlFrame.Position = UDim2.new(0, 0, 0, 40)
+speedControlFrame.BackgroundTransparency = 1
+speedControlFrame.Parent = flyControlFrame
+
 local speedLabel = Instance.new("TextLabel")
-speedLabel.Size = UDim2.new(0, 40, 0, 30)
-speedLabel.Position = UDim2.new(0, 240, 0, 10)
-speedLabel.BackgroundColor3 = Color3.fromRGB(255, 85, 0)
-speedLabel.BorderSizePixel = 0
-speedLabel.Text = tostring(FlySpeed)
-speedLabel.Font = Enum.Font.GothamBold
-speedLabel.TextSize = 16
-speedLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
-speedLabel.Parent = flyFrame
+speedLabel.Size = UDim2.new(0, 100, 0, 40)
+speedLabel.Position = UDim2.new(0, 100, 0, 0)
+speedLabel.BackgroundTransparency = 1
+speedLabel.Text = "Kecepatan:"
+speedLabel.Font = Enum.Font.Gotham
+speedLabel.TextSize = 14
+speedLabel.TextColor3 = Color3.fromRGB(220,220,220)
+speedLabel.TextXAlignment = Enum.TextXAlignment.Right
+speedLabel.Parent = speedControlFrame
 
--- Tombol Plus
-local plusBtn = Instance.new("TextButton")
-plusBtn.Size = UDim2.new(0, 30, 0, 30)
-plusBtn.Position = UDim2.new(0, 200, 0, 10)
-plusBtn.BackgroundColor3 = Color3.fromRGB(133, 145, 255)
-plusBtn.BorderSizePixel = 0
-plusBtn.Text = "+"
-plusBtn.Font = Enum.Font.GothamBold
-plusBtn.TextSize = 20
-plusBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
-plusBtn.Parent = flyFrame
+local speedMinusBtn = Instance.new("TextButton")
+speedMinusBtn.Size = UDim2.new(0, 30, 0, 30)
+speedMinusBtn.Position = UDim2.new(0, 210, 0, 5)
+speedMinusBtn.BackgroundColor3 = Color3.fromRGB(100,100,100) -- Abu-abu terang
+speedMinusBtn.BorderSizePixel = 0
+speedMinusBtn.Text = "-"
+speedMinusBtn.Font = Enum.Font.GothamBold
+speedMinusBtn.TextSize = 18
+speedMinusBtn.TextColor3 = Color3.fromRGB(255,255,255) -- Warna putih
+speedMinusBtn.Parent = speedControlFrame
 
--- Tombol Minus
-local minusBtn = Instance.new("TextButton")
-minusBtn.Size = UDim2.new(0, 30, 0, 30)
-minusBtn.Position = UDim2.new(0, 170, 0, 10)
-minusBtn.BackgroundColor3 = Color3.fromRGB(123, 255, 247)
-minusBtn.BorderSizePixel = 0
-minusBtn.Text = "-"
-minusBtn.Font = Enum.Font.GothamBold
-minusBtn.TextSize = 20
-minusBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
-minusBtn.Parent = flyFrame
+local speedValueLabel = Instance.new("TextLabel")
+speedValueLabel.Size = UDim2.new(0, 40, 0, 30)
+speedValueLabel.Position = UDim2.new(0, 245, 0, 5)
+speedValueLabel.BackgroundColor3 = Color3.fromRGB(45,45,45) -- Abu-abu gelap
+speedValueLabel.BorderSizePixel = 0
+speedValueLabel.Text = tostring(FlySpeed)
+speedValueLabel.Font = Enum.Font.GothamBold
+speedValueLabel.TextSize = 16
+speedValueLabel.TextColor3 = Color3.fromRGB(255,255,255)
+speedValueLabel.Parent = speedControlFrame
+
+local speedPlusBtn = Instance.new("TextButton")
+speedPlusBtn.Size = UDim2.new(0, 30, 0, 30)
+speedPlusBtn.Position = UDim2.new(0, 290, 0, 5)
+speedPlusBtn.BackgroundColor3 = Color3.fromRGB(100,100,100) -- Abu-abu terang
+speedPlusBtn.BorderSizePixel = 0
+speedPlusBtn.Text = "+"
+speedPlusBtn.Font = Enum.Font.GothamBold
+speedPlusBtn.TextSize = 18
+speedPlusBtn.TextColor3 = Color3.fromRGB(255,255,255) -- Warna putih
+speedPlusBtn.Parent = speedControlFrame
 
 -- Update label angka
 local function updateAllLabels()
@@ -397,7 +387,7 @@ flyRow.val.Text = tostring(FlySpeed)
 extraRow.val.Text = tostring(ExtraSpeed)
 walkRow.val.Text = tostring(WalkSpeedValue)
 jumpRow.val.Text = tostring(JumpPowerValue)
-speedLabel.Text = tostring(FlySpeed)
+speedValueLabel.Text = tostring(FlySpeed)
 end
 updateAllLabels()
 
@@ -420,30 +410,27 @@ bindIncDec(extraRow, function() return ExtraSpeed end, function(v) ExtraSpeed = 
 bindIncDec(walkRow, function() return WalkSpeedValue end, function(v) WalkSpeedValue = math.max(1,v); humanoid.WalkSpeed=WalkSpeedValue end)
 bindIncDec(jumpRow, function() return JumpPowerValue end, function(v) JumpPowerValue = math.max(1,v); humanoid.JumpPower=JumpPowerValue end)
 
--- Fly logic dari kode baru
+-- Fly logic
 local nowe = false
-local tpwalking = false
-local speeds = FlySpeed
+local upTween, downTween
 
-plusBtn.MouseButton1Click:Connect(function()
-    FlySpeed = FlySpeed + 1
-    speeds = FlySpeed
-    updateAllLabels()
-end)
-
-minusBtn.MouseButton1Click:Connect(function()
+speedMinusBtn.MouseButton1Click:Connect(function()
     if FlySpeed > 1 then
         FlySpeed = FlySpeed - 1
-        speeds = FlySpeed
         updateAllLabels()
     end
+end)
+
+speedPlusBtn.MouseButton1Click:Connect(function()
+    FlySpeed = FlySpeed + 1
+    updateAllLabels()
 end)
 
 flyOnOffBtn.MouseButton1Click:Connect(function()
     if nowe == true then  
         nowe = false  
         flyOnOffBtn.Text = "FLY"
-        flyOnOffBtn.BackgroundColor3 = Color3.fromRGB(255, 249, 74)
+        flyOnOffBtn.BackgroundColor3 = Color3.fromRGB(45,45,45)
         
         -- Enable all states
         humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing, true)  
@@ -465,7 +452,7 @@ flyOnOffBtn.MouseButton1Click:Connect(function()
     else   
         nowe = true  
         flyOnOffBtn.Text = "STOP"
-        flyOnOffBtn.BackgroundColor3 = Color3.fromRGB(255, 100, 100)
+        flyOnOffBtn.BackgroundColor3 = Color3.fromRGB(170,40,40)
         
         -- Disable all states
         humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing, false)  
@@ -487,7 +474,6 @@ flyOnOffBtn.MouseButton1Click:Connect(function()
     end
 end)
 
-local upTween
 upBtn.MouseButton1Down:Connect(function()
     upTween = game:GetService("RunService").Heartbeat:Connect(function()
         root.CFrame = root.CFrame * CFrame.new(0, 1, 0)
@@ -501,7 +487,6 @@ upBtn.MouseButton1Up:Connect(function()
     end
 end)
 
-local downTween
 downBtn.MouseButton1Down:Connect(function()
     downTween = game:GetService("RunService").Heartbeat:Connect(function()
         root.CFrame = root.CFrame * CFrame.new(0, -1, 0)
