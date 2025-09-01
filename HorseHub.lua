@@ -13,11 +13,9 @@ local root = character:WaitForChild("HumanoidRootPart")
 -- Default values
 local FlyEnabled = false
 local FlySpeed = 50
-local FlyHeight = 10
 local ExtraSpeed = 0
 local WalkSpeedValue = 16
 local JumpPowerValue = 50
-local VerticalSpeed = 1
 
 -- PlayerGui
 local playerGui = player:WaitForChild("PlayerGui")
@@ -87,6 +85,39 @@ screenGui.Name = "HorseHubGUI"
 screenGui.ResetOnSpawn = false
 screenGui.Parent = playerGui
 
+-- Notifikasi di pojok kanan bawah
+local notification = Instance.new("Frame")
+notification.Size = UDim2.new(0, 200, 0, 60)
+notification.Position = UDim2.new(1, -210, 1, -70)
+notification.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+notification.BorderSizePixel = 0
+notification.Parent = screenGui
+
+local notifStroke = Instance.new("UIStroke")
+notifStroke.Thickness = 2
+notifStroke.Color = Color3.fromRGB(100,100,100)
+notifStroke.Parent = notification
+
+local versionText = Instance.new("TextLabel")
+versionText.Size = UDim2.new(1, 0, 0, 30)
+versionText.Position = UDim2.new(0, 0, 0, 0)
+versionText.BackgroundTransparency = 1
+versionText.Text = "Horse Hub v1"
+versionText.Font = Enum.Font.GothamBold
+versionText.TextSize = 18
+versionText.TextColor3 = Color3.fromRGB(255,50,50)
+versionText.Parent = notification
+
+local descText = Instance.new("TextLabel")
+descText.Size = UDim2.new(1, 0, 0, 30)
+descText.Position = UDim2.new(0, 0, 0, 30)
+descText.BackgroundTransparency = 1
+descText.Text = "thanks for using my script btw script by h4000audio enjoy!"
+descText.Font = Enum.Font.Gotham
+descText.TextSize = 12
+descText.TextColor3 = Color3.fromRGB(200,200,200)
+descText.Parent = notification
+
 -- Top Title
 local topTitle = Instance.new("TextLabel")
 topTitle.Size = UDim2.new(0, 220, 0, 24)
@@ -101,8 +132,8 @@ topTitle.Parent = screenGui
 
 -- Main Frame
 local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0, 340, 0, 380)
-frame.Position = UDim2.new(0.5, -170, 0.5, -190)
+frame.Size = UDim2.new(0, 340, 0, 350)
+frame.Position = UDim2.new(0.5, -170, 0.5, -175)
 frame.BackgroundColor3 = Color3.fromRGB(28,28,28)
 frame.BorderSizePixel = 0
 frame.Parent = screenGui
@@ -271,29 +302,102 @@ end
 
 -- Buat kontrol
 local flyRow = createNumberRow(frame, 60, "Terbang Kecepatan", FlySpeed)
-local heightRow = createNumberRow(frame, 100, "Fly Height", FlyHeight)
-local extraRow = createNumberRow(frame, 140, "Extra Kecepatan", ExtraSpeed)
-local walkRow = createNumberRow(frame, 180, "Kecepatan Berjalan", WalkSpeedValue)
-local jumpRow = createNumberRow(frame, 220, "Daya Lompat", JumpPowerValue)
+local extraRow = createNumberRow(frame, 100, "Extra Kecepatan", ExtraSpeed)
+local walkRow = createNumberRow(frame, 140, "Kecepatan Berjalan", WalkSpeedValue)
+local jumpRow = createNumberRow(frame, 180, "Daya Lompat", JumpPowerValue)
 
--- Tombol toggle fly
-local flyToggle = Instance.new("TextButton")
-flyToggle.Size = UDim2.new(0,300,0,36)
-flyToggle.Position = UDim2.new(0.5,-150,0,268)
-flyToggle.Text = "Toggle Fly (F)"
-flyToggle.Font = Enum.Font.GothamBold
-flyToggle.TextSize = 18
-flyToggle.TextColor3 = Color3.fromRGB(255,255,255)
-flyToggle.BackgroundColor3 = Color3.fromRGB(60,60,60)
-flyToggle.Parent = frame
+-- Tombol Fly baru (menggantikan Toggle Fly)
+local flyFrame = Instance.new("Frame")
+flyFrame.Size = UDim2.new(0, 300, 0, 80)
+flyFrame.Position = UDim2.new(0.5, -150, 0, 220)
+flyFrame.BackgroundColor3 = Color3.fromRGB(45,45,45)
+flyFrame.BorderSizePixel = 0
+flyFrame.Parent = frame
+
+local flyStroke = Instance.new("UIStroke")
+flyStroke.Thickness = 1
+flyStroke.Color = Color3.fromRGB(100,100,100)
+flyStroke.Parent = flyFrame
+
+-- Tombol Up
+local upBtn = Instance.new("TextButton")
+upBtn.Size = UDim2.new(0, 60, 0, 30)
+upBtn.Position = UDim2.new(0, 10, 0, 10)
+upBtn.BackgroundColor3 = Color3.fromRGB(79, 255, 152)
+upBtn.BorderSizePixel = 0
+upBtn.Text = "UP"
+upBtn.Font = Enum.Font.GothamBold
+upBtn.TextSize = 14
+upBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
+upBtn.Parent = flyFrame
+
+-- Tombol Down
+local downBtn = Instance.new("TextButton")
+downBtn.Size = UDim2.new(0, 60, 0, 30)
+downBtn.Position = UDim2.new(0, 80, 0, 10)
+downBtn.BackgroundColor3 = Color3.fromRGB(215, 255, 121)
+downBtn.BorderSizePixel = 0
+downBtn.Text = "DOWN"
+downBtn.Font = Enum.Font.GothamBold
+downBtn.TextSize = 14
+downBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
+downBtn.Parent = flyFrame
+
+-- Tombol Fly On/Off
+local flyOnOffBtn = Instance.new("TextButton")
+flyOnOffBtn.Size = UDim2.new(0, 80, 0, 30)
+flyOnOffBtn.Position = UDim2.new(0, 150, 0, 10)
+flyOnOffBtn.BackgroundColor3 = Color3.fromRGB(255, 249, 74)
+flyOnOffBtn.BorderSizePixel = 0
+flyOnOffBtn.Text = "FLY"
+flyOnOffBtn.Font = Enum.Font.GothamBold
+flyOnOffBtn.TextSize = 14
+flyOnOffBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
+flyOnOffBtn.Parent = flyFrame
+
+-- Label Speed
+local speedLabel = Instance.new("TextLabel")
+speedLabel.Size = UDim2.new(0, 40, 0, 30)
+speedLabel.Position = UDim2.new(0, 240, 0, 10)
+speedLabel.BackgroundColor3 = Color3.fromRGB(255, 85, 0)
+speedLabel.BorderSizePixel = 0
+speedLabel.Text = tostring(FlySpeed)
+speedLabel.Font = Enum.Font.GothamBold
+speedLabel.TextSize = 16
+speedLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+speedLabel.Parent = flyFrame
+
+-- Tombol Plus
+local plusBtn = Instance.new("TextButton")
+plusBtn.Size = UDim2.new(0, 30, 0, 30)
+plusBtn.Position = UDim2.new(0, 200, 0, 10)
+plusBtn.BackgroundColor3 = Color3.fromRGB(133, 145, 255)
+plusBtn.BorderSizePixel = 0
+plusBtn.Text = "+"
+plusBtn.Font = Enum.Font.GothamBold
+plusBtn.TextSize = 20
+plusBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
+plusBtn.Parent = flyFrame
+
+-- Tombol Minus
+local minusBtn = Instance.new("TextButton")
+minusBtn.Size = UDim2.new(0, 30, 0, 30)
+minusBtn.Position = UDim2.new(0, 170, 0, 10)
+minusBtn.BackgroundColor3 = Color3.fromRGB(123, 255, 247)
+minusBtn.BorderSizePixel = 0
+minusBtn.Text = "-"
+minusBtn.Font = Enum.Font.GothamBold
+minusBtn.TextSize = 20
+minusBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
+minusBtn.Parent = flyFrame
 
 -- Update label angka
 local function updateAllLabels()
 flyRow.val.Text = tostring(FlySpeed)
-heightRow.val.Text = tostring(FlyHeight)
 extraRow.val.Text = tostring(ExtraSpeed)
 walkRow.val.Text = tostring(WalkSpeedValue)
 jumpRow.val.Text = tostring(JumpPowerValue)
+speedLabel.Text = tostring(FlySpeed)
 end
 updateAllLabels()
 
@@ -311,51 +415,104 @@ updateAllLabels()
 end)
 end
 
-bindIncDec(flyRow, function() return FlySpeed end, function(v) FlySpeed = math.max(0,v) end)
-bindIncDec(heightRow, function() return FlyHeight end, function(v) FlyHeight = v end)
+bindIncDec(flyRow, function() return FlySpeed end, function(v) FlySpeed = math.max(1,v); updateAllLabels() end)
 bindIncDec(extraRow, function() return ExtraSpeed end, function(v) ExtraSpeed = v end)
 bindIncDec(walkRow, function() return WalkSpeedValue end, function(v) WalkSpeedValue = math.max(1,v); humanoid.WalkSpeed=WalkSpeedValue end)
 bindIncDec(jumpRow, function() return JumpPowerValue end, function(v) JumpPowerValue = math.max(1,v); humanoid.JumpPower=JumpPowerValue end)
 
--- Fly logic
-local currentBV
-local function startFly()
-if currentBV then currentBV:Destroy() end
-currentBV = Instance.new("BodyVelocity")
-currentBV.MaxForce = Vector3.new(1e5,1e5,1e5)
-currentBV.P = 1250
-currentBV.Parent = root
+-- Fly logic dari kode baru
+local nowe = false
+local tpwalking = false
+local speeds = FlySpeed
 
-while FlyEnabled and currentBV.Parent do  
-    local moveDir = Vector3.new()  
-    if UserInputService:IsKeyDown(Enum.KeyCode.W) then moveDir += root.CFrame.LookVector end  
-    if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir -= root.CFrame.LookVector end  
-    if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir -= root.CFrame.RightVector end  
-    if UserInputService:IsKeyDown(Enum.KeyCode.D) then moveDir += root.CFrame.RightVector end  
+plusBtn.MouseButton1Click:Connect(function()
+    FlySpeed = FlySpeed + 1
+    speeds = FlySpeed
+    updateAllLabels()
+end)
 
-    local vy = 0  
-    if UserInputService:IsKeyDown(Enum.KeyCode.Space) then vy += VerticalSpeed end  
-    if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then vy -= VerticalSpeed end  
+minusBtn.MouseButton1Click:Connect(function()
+    if FlySpeed > 1 then
+        FlySpeed = FlySpeed - 1
+        speeds = FlySpeed
+        updateAllLabels()
+    end
+end)
 
-    local hv = (moveDir.Magnitude>0 and moveDir.Unit*FlySpeed) or Vector3.new()  
-    currentBV.Velocity = hv + Vector3.new(0, FlyHeight+vy+ExtraSpeed, 0)  
+flyOnOffBtn.MouseButton1Click:Connect(function()
+    if nowe == true then  
+        nowe = false  
+        flyOnOffBtn.Text = "FLY"
+        flyOnOffBtn.BackgroundColor3 = Color3.fromRGB(255, 249, 74)
+        
+        -- Enable all states
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing, true)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown, true)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.Flying, true)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.Freefall, true)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.GettingUp, true)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.Landed, true)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.Physics, true)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding, true)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, true)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.Running, true)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics, true)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated, true)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics, true)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.Swimming, true)  
+        humanoid:ChangeState(Enum.HumanoidStateType.RunningNoPhysics)  
+    else   
+        nowe = true  
+        flyOnOffBtn.Text = "STOP"
+        flyOnOffBtn.BackgroundColor3 = Color3.fromRGB(255, 100, 100)
+        
+        -- Disable all states
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing, false)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.Flying, false)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.Freefall, false)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.GettingUp, false)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, false)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.Landed, false)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.Physics, false)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding, false)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, false)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.Running, false)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics, false)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated, false)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics, false)  
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.Swimming, false)  
+        humanoid:ChangeState(Enum.HumanoidStateType.Swimming)  
+    end
+end)
 
-    RunService.RenderStepped:Wait()  
-end  
-if currentBV then currentBV:Destroy() end
+local upTween
+upBtn.MouseButton1Down:Connect(function()
+    upTween = game:GetService("RunService").Heartbeat:Connect(function()
+        root.CFrame = root.CFrame * CFrame.new(0, 1, 0)
+    end)
+end)
 
-end
+upBtn.MouseButton1Up:Connect(function()
+    if upTween then
+        upTween:Disconnect()
+        upTween = nil
+    end
+end)
 
-local function toggleFly()
-FlyEnabled = not FlyEnabled
-if FlyEnabled then spawn(startFly) end
-end
+local downTween
+downBtn.MouseButton1Down:Connect(function()
+    downTween = game:GetService("RunService").Heartbeat:Connect(function()
+        root.CFrame = root.CFrame * CFrame.new(0, -1, 0)
+    end)
+end)
 
-flyToggle.MouseButton1Click:Connect(toggleFly)
-UserInputService.InputBegan:Connect(function(i,gpe)
-if i.UserInputType==Enum.UserInputType.Keyboard and i.KeyCode==Enum.KeyCode.F and not gpe then
-toggleFly()
-end
+downBtn.MouseButton1Up:Connect(function()
+    if downTween then
+        downTween:Disconnect()
+        downTween = nil
+    end
 end)
 
 -- Minimize/restore
@@ -370,7 +527,25 @@ end)
 closeBtn.MouseButton1Click:Connect(function() confirmFrame.Visible=true end)
 noBtn.MouseButton1Click:Connect(function() confirmFrame.Visible=false end)
 yesBtn.MouseButton1Click:Connect(function()
-if currentBV then currentBV:Destroy() end
+if nowe then
+    nowe = false
+    humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing, true)
+    humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown, true)
+    humanoid:SetStateEnabled(Enum.HumanoidStateType.Flying, true)
+    humanoid:SetStateEnabled(Enum.HumanoidStateType.Freefall, true)
+    humanoid:SetStateEnabled(Enum.HumanoidStateType.GettingUp, true)
+    humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
+    humanoid:SetStateEnabled(Enum.HumanoidStateType.Landed, true)
+    humanoid:SetStateEnabled(Enum.HumanoidStateType.Physics, true)
+    humanoid:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding, true)
+    humanoid:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, true)
+    humanoid:SetStateEnabled(Enum.HumanoidStateType.Running, true)
+    humanoid:SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics, true)
+    humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated, true)
+    humanoid:SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics, true)
+    humanoid:SetStateEnabled(Enum.HumanoidStateType.Swimming, true)
+    humanoid:ChangeState(Enum.HumanoidStateType.RunningNoPhysics)
+end
 screenGui:Destroy()
 end)
 
@@ -386,14 +561,3 @@ root=char:WaitForChild("HumanoidRootPart")
 humanoid.WalkSpeed=WalkSpeedValue
 humanoid.JumpPower=JumpPowerValue
 end)
-
--- Instruction bottom
-local inst=Instance.new("TextLabel")
-inst.Size=UDim2.new(0,300,0,20)
-inst.Position=UDim2.new(0.5,-150,1,-28)
-inst.BackgroundTransparency=1
-inst.Text="F=Fly | Space=Up | Shift=Down | \(<\) > adjust values"
-inst.Font=Enum.Font.SourceSans
-inst.TextSize=14
-inst.TextColor3=Color3.fromRGB(200,200,200)
-inst.Parent=frame
